@@ -1,0 +1,49 @@
+{% extends "./base.html.twig" %}
+{% block title %}News{% endblock %}
+
+{% block body %}
+    <div class="w-4/5 m-auto text-center">
+        <div class="py-12 border-b border-gray-200">
+            <h1 class="text-6xl pt-12 pb-8">
+                Searched for {{ app.request.query.get('search') }} 
+            </h1>
+        </div>
+    </div>
+
+    <div class="mx-auto w-4/5 my-8">
+        <form action="search" method="get" >
+            <input 
+                type="text" 
+                name="search" 
+                placeholder="Search.."
+                class="border border-gray-500 text-sm py-2 px-3 rounded "
+                value="{{ app.request.query.get('search') }}">
+            <button
+                type="submit" 
+                class="btn btn-default uppercase border border-gray-500 text-sm py-2 px-3 rounded transition transition-all bg-gray-800 text-white hover:bg-white hover:text-gray-800">
+                Search
+            </button>
+        </form>
+    </div>
+    <div class="md:grid lg:grid-cols-2 gap-20 w-4/5 mx-auto py-15 ">
+        <!-- Review Item -->
+        {% for post in posts %}
+            <div class="text-center pt-8 pb-4">
+                <img
+                    src="{{ post.imagePath }}"
+                    alt=""
+                    class="shadow-xl rounded-md"
+                />
+
+                <h2 class="text-gray-700 font-bold text-3xl py-2">
+                    {{ post.title }}
+                </h2>
+
+                <span class="text-gray-500">
+                    By: <a class="italic text-sm text-gray-800 font-bold text-1xl py-2" href="/news/{{ post.owner.id }}">{{ post.owner.username }}</a>
+                    , {{ post.createdOn|format_datetime('short', 'none', locale='fr') }}
+                </span>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
